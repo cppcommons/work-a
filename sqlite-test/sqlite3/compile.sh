@@ -1,2 +1,2 @@
 #!bash -uvx
-vc32 cl /c sqlite3.c
+cl32 /c sqlite3.c
