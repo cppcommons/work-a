@@ -1,0 +1,15 @@
+/.bash_history
+.binaries
+cyginst.bat
+*.c32
+*.c64
+ms2inst.bat
+*.m32
+*.m64
+.viminfo
+*.bc
+*.ll
+*.o
+*.obj
+*.exe
+*.s
