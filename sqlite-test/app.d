@@ -57,10 +57,16 @@ foreach (Row row; results)
 
     // Retrieve "score", which is at index 2, e.g. using the peek function,
     // using a Nullable type
-    auto score = row.peek!(Nullable!double)(2);
+    //auto score = row.peek!(Nullable!double)(2);
+    auto score = row["score"].as!(Nullable!double);
+    //score2.nullify();
     if (!score.isNull)
     {
-        // ...
+      writeln(score);
+    }
+    else
+    {
+     writeln("<NULL>");
     }
 }
 return 0;
