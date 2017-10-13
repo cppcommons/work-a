@@ -7,5 +7,13 @@
  "license": "proprietary",
  "sourcePaths":["."],
  "sourceFiles":[
+  "./sqlite3.obj"	
  ],
+ "dependencies": {
+  "vibe-d": "~master",
+  "d2sqlite3": "~master",
+ },
+ "subConfigurations": {
+  "d2sqlite3": "without-lib",
+ },
 }
