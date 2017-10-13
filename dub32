@@ -1,0 +1,2 @@
+#!bash
+vc32 dub --arch=x86_mscoff $*

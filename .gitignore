@@ -12,4 +12,6 @@ ms2inst.bat
 *.o
 *.obj
 *.exe
+*.dll
 *.s
+dub.selections.json
