@@ -1,0 +1,11 @@
+{
+ "name": "sqlite-test",
+ "authors": [
+  "javacommons"
+ ],
+ "description": "A minimal D application.",
+ "license": "proprietary",
+ "sourcePaths":["."],
+ "sourceFiles":[
+ ],
+}
