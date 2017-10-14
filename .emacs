@@ -94,9 +94,9 @@
             (local-set-key  (kbd "C-c C-p") 'flycheck-previous-error)
             (local-set-key  (kbd "C-c C-n") 'flycheck-next-error)))
 
-                                        ;(use-package flycheck :ensure t)
+(use-package flycheck :ensure t)
 
-(load-file "~/flycheck.el")
+;(load-file "~/flycheck.el")
 
 ;(add-to-list 'exec-path (expand-file-name "/cygpath/c/D/dmd2/windows/bin"))
 (add-to-list 'exec-path (expand-file-name "/c/D/dmd2/windows/bin"))
@@ -125,7 +125,7 @@ Requires DMD 2.066 or newer.  See URL `http://dlang.org/'."
          (one-or-more " ") (message) line-end))
   :modes d-mode)
 
-(defun flycheck-checker-shell-command (checker)
+'(defun flycheck-checker-shell-command (checker)
   "Get a shell command for CHECKER.
 
 Perform substitution in the arguments of CHECKER, but with

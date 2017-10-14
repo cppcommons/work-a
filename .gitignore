@@ -15,3 +15,5 @@ ms2inst.bat
 *.dll
 *.s
 dub.selections.json
+.gnupg
+/.emacs.d/elpa
