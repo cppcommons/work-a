@@ -5,7 +5,6 @@ case "${unameOut}" in
                 cmd /c "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86 "&" $* |& iconv -f cp932 -t utf-8
 		;;
     MINGW*)     machine=MinGw
-	        #/c/Windows/System32/cmd.exe /c "call \"C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat\" x86 & $*" |& iconv -f cp932 -t utf-8
 	        cmd /c "call \"C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat\" x86 & $*" |& iconv -f cp932 -t utf-8
 		;;
     *)          machine="UNKNOWN:${unameOut}"

@@ -12,12 +12,12 @@ unittest {
   printf("[stdout]\n");
   //writeln("test start");
   assert(1==1);
-  assert(1==add2(1,2));
+  assert(3==add2(1,2));
   assert(1==1);
   //writeln("test success");
 }
 
 
 unittest {
-  assert(1==add2(1,2));
+  assert(3==add2(1,2));
 }

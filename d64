@@ -1,0 +1,2 @@
+#!bash
+vc64 dub $* --arch=x86_64
