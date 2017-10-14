@@ -17,3 +17,4 @@ ms2inst.bat
 dub.selections.json
 .gnupg
 /.emacs.d/elpa
+/.emacs.d/auto-save-list

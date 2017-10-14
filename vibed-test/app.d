@@ -4,6 +4,14 @@ import vibe.vibe;
 
 static HTTPServerSettings settings;
 
+unittest{
+    assert(1+2 == 3);
+    auto arr = [1, 2, 3];
+    assert(arr.length == 4); // 間違ってるけど Emacs が教えてくれる！
+}
+
+version(unittest) {}
+else
 void main()
 {
   writeln("start...");
@@ -21,4 +29,17 @@ void handleRequest(HTTPServerRequest req, HTTPServerResponse res)
 {
   if (req.path == "/")
     res.writeBody("Hello, World!");
+}
+
+class Sum
+{
+    int add(int x, int y) { return x + y; }
+
+    unittest
+    {
+        Sum sum = new Sum;
+        assert(sum.add(3,4) == 7);
+        assert(sum.add(-2,0) == -2);
+        assert(sum.add(-2,0) == -1);
+    }
 }
