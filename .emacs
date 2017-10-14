@@ -34,12 +34,15 @@
 
 ;(global-hl-line-mode t)
 
-(package-initialize)
+(require 'package)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")))
-
+(package-initialize)
+(unless package-archive-contents (package-refresh-contents))
+(unless (package-installed-p 'use-package)
+    (package-install 'use-package))
 ;初めてuse-packageを使う方は
 ;以下のコマンドを実行します。
 ;
