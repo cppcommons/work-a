@@ -105,7 +105,8 @@
 ;(load-file "~/flycheck.el")
 
 ;(add-to-list 'exec-path (expand-file-name "/cygpath/c/D/dmd2/windows/bin"))
-(add-to-list 'exec-path (expand-file-name "/c/D/dmd2/windows/bin"))
+(add-to-list 'exec-path (expand-file-name "~/dmd2/linux/bin64"))
+(add-to-list 'exec-path "/c/D/dmd2/windows/bin")
 
 
 (global-flycheck-mode)
