@@ -6,7 +6,8 @@
 	],
 	"description": "A minimal D application.",
 	"license": "proprietary",
+    "sourcePaths":["."],
+    "importPaths":["."],
     "sourceFiles":[
-        "source/app.d"
     ]
 }
