@@ -1,15 +1,19 @@
 {
- "name": "sqlite-test",
+    "name": "sqlite-test",
+    "targetType": "executable",
  "authors": [
   "javacommons"
  ],
  "description": "A minimal D application.",
  "license": "proprietary",
  "sourcePaths":["."],
- "sourceFiles":[
+ "sourceFiles-x86":[
   "./sqlite3/sqlite3.obj"	
  ],
- "dependencies": {
+ "sourceFiles-x86_64":[
+  "./sqlite3/sqlite3.o"	
+ ],
+  "dependencies": {
   "d2sqlite3": "~master",
  },
  "subConfigurations": {

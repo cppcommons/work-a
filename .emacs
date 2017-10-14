@@ -17,6 +17,13 @@
 
 (put 'erase-buffer 'disabled nil)
 
+(windmove-default-keybindings 'meta)
+(global-set-key (kbd "\e <up>") 'windmove-up)
+(global-set-key (kbd "\e <down>") 'windmove-down)
+(global-set-key (kbd "\e <left>") 'windmove-left)
+(global-set-key (kbd "\e <right>") 'windmove-right)
+(global-set-key (kbd "\C-x <kp-add>") 'balance-windows)
+
 (when (eq window-system 'w32)
   (custom-set-faces
    '(default ((t
@@ -34,12 +41,15 @@
 
 ;(global-hl-line-mode t)
 
-(package-initialize)
+(require 'package)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")))
-
+(package-initialize)
+(unless package-archive-contents (package-refresh-contents))
+(unless (package-installed-p 'use-package)
+    (package-install 'use-package))
 ;初めてuse-packageを使う方は
 ;以下のコマンドを実行します。
 ;
@@ -102,7 +112,8 @@
 ;(load-file "~/flycheck.el")
 
 ;(add-to-list 'exec-path (expand-file-name "/cygpath/c/D/dmd2/windows/bin"))
-(add-to-list 'exec-path (expand-file-name "/c/D/dmd2/windows/bin"))
+(add-to-list 'exec-path (expand-file-name "~/dmd2/linux/bin64"))
+(add-to-list 'exec-path "/c/D/dmd2/windows/bin")
 
 
 (global-flycheck-mode)

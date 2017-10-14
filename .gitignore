@@ -18,3 +18,8 @@ dub.selections.json
 .gnupg
 /.emacs.d/elpa
 /.emacs.d/auto-save-list
+\#*#
+
+*.a
+
+sqlite-test/sqlite-test
