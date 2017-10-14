@@ -10,7 +10,6 @@
   "./sqlite3/sqlite3.obj"	
  ],
  "dependencies": {
-  "vibe-d": "~master",
   "d2sqlite3": "~master",
  },
  "subConfigurations": {
