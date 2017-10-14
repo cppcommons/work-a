@@ -1,8 +1,12 @@
 {
 	"name": "yyy",
+    "targetType": "executable",
 	"authors": [
 		"owner"
 	],
 	"description": "A minimal D application.",
-	"license": "proprietary"
+	"license": "proprietary",
+    "sourceFiles":[
+        "source/app.d"
+    ]
 }
