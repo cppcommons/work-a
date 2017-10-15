@@ -1,4 +1,4 @@
-export PATH=/c/D/dmd2/windows/bin:$PATH
+#export PATH=/c/D/dmd2/windows/bin:$PATH
 #export PATH=`cygpath -u C://D/dmd2/windows/bin`:$PATH
 #export PATH=/c/D/dm/bin:$PATH
 #export PATH=`cygpath -u C:/D/dm/bin`:$PATH

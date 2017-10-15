@@ -106,6 +106,16 @@
             (setq-local flycheck-checker 'd-dmd)
             (local-set-key  (kbd "C-c C-p") 'flycheck-previous-error)
             (local-set-key  (kbd "C-c C-n") 'flycheck-next-error)))
+(add-hook 'c-mode-hook
+          (lambda ()
+            (setq-local flycheck-checker 'd-dmd)
+            (local-set-key  (kbd "C-c C-p") 'flycheck-previous-error)
+            (local-set-key  (kbd "C-c C-n") 'flycheck-next-error)))
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (setq-local flycheck-checker 'd-dmd)
+            (local-set-key  (kbd "C-c C-p") 'flycheck-previous-error)
+            (local-set-key  (kbd "C-c C-n") 'flycheck-next-error)))
 
 (use-package flycheck :ensure t)
 

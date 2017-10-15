@@ -9,6 +9,9 @@ set MSYS2_PKGS=diffutils,man-db,procps,psmisc,tmux-git,vim
 set MSYS2_PKGS=%MSYS2_PKGS%,  curl,wget,git,subversion,tar,zip,unzip
 set MSYS2_PKGS=%MSYS2_PKGS%,  mingw32/mingw-w64-i686-emacs
 set MSYS2_PKGS=%MSYS2_PKGS%,  mingw32/mingw-w64-i686-clang
+set MSYS2_PKGS=%MSYS2_PKGS%,  mingw32/mingw-w64-i686-make
+set MSYS2_PKGS=%MSYS2_PKGS%,  make
+
 set MSYS2_USE_MINGW32=1
 ::set MSYS2_USE_MINGW64=1
 ::set MSYS2_USE_MSYS=1
