@@ -1,4 +1,4 @@
-module pegged.examples.arithmetic;
+module arithmetic;
 
 import std.conv: to;
 
