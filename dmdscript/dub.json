@@ -1,11 +1,11 @@
 {
-	"name": "scripttest",
+    "name": "scripttest",
     "targetType": "executable",
-	"authors": [
-		"owner"
-	],
-	"description": "A minimal D application.",
-	"license": "proprietary",
+    "authors": [
+        "owner"
+    ],
+    "description": "A minimal D application.",
+    "license": "proprietary",
     "importPaths":["."],
     "sourcePaths":["."],
     "sourceFiles":[
