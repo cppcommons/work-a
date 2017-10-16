@@ -6,9 +6,9 @@
     ],
     "description": "A minimal D application.",
     "license": "proprietary",
-    "importPaths":["src", "import"],
+    "importPaths":["src", "lib"],
     "sourcePaths":["src"],
-    "sourceFiles":["import/pegged.lib"],
+    "sourceFiles-x86_mscoff":["lib/pegged-ms32.lib"],
     "dependencies": {
         "dmdscript": "~master",
     },
