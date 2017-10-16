@@ -8,7 +8,7 @@ import pegged.grammar;
 import arithmetic;
 import std.conv: to;
 
-import MemoryModule;
+//import MemoryModule;
 
 static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
 //static ubyte[] libcurl_dll = cast(ubyte[]) import("libcurl.dll");
@@ -48,6 +48,7 @@ void main()
   {
     void * handle = MemoryLoadLibrary(&libcurl_dll[0]);
   }
+  version(none)
   {
 	import std.file : write;
 	//write("libcurl.dll", libcurl_dll);
@@ -57,7 +58,9 @@ void main()
     handle = LoadLibraryA("lib/libcurl.dll");
   }
   {
-    import std.net.curl, std.stdio;
+    import std.stdio;
+    import std.net.curl;
+    //import my.net.curl;
     foreach (chunk; byChunk("dlang.org", 20)) {
       writeln(chunk);
       stdout.flush();
