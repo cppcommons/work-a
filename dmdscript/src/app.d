@@ -8,11 +8,15 @@ import pegged.grammar;
 import arithmetic;
 import std.conv: to;
 
-static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
+import MemoryModule;
+
+//static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
+static ubyte[] libcurl_dll = cast(ubyte[]) import("libcurl.dll");
 
 void main()
 {
   import std.stdio;
+
   //fprintf(stdout, "test1\n");
   //printf("%f\n", interpreter("1"));
   writeln(interpreter("1"));
@@ -40,6 +44,9 @@ void main()
     Variable <- identifier
 ");
   {
+    void * handle = MemoryLoadLibrary(&libcurl_dll[0]);
+  }
+  {
 	import std.file : write;
 	//write("libcurl.dll", libcurl_dll);
 	write("lib/libcurl.dll", libcurl_dll);
@@ -52,6 +59,14 @@ void main()
     foreach (chunk; byChunk("dlang.org", 20))
     writeln(chunk); // chunk is ubyte[100]
   }
+  {
+    import std.file;
+    import std.path;
+    writeln(thisExePath());
+    string exe = thisExePath();
+    writeln( dirName(exe) );
+  }
+
 }
 
 void func1() {
