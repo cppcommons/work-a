@@ -1,4 +1,4 @@
-import std.stdio;
+//import std.stdio;
 //import core.stdc.stdio;
 //import core.stdc.stdlib;
 //import core.stdc.string;
@@ -8,8 +8,11 @@ import pegged.grammar;
 import arithmetic;
 import std.conv: to;
 
+static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
+
 void main()
 {
+  import std.stdio;
   //fprintf(stdout, "test1\n");
   //printf("%f\n", interpreter("1"));
   writeln(interpreter("1"));
@@ -24,6 +27,44 @@ void main()
   //fflush(stdout); // for core.stdc.stdio
   //Thread.sleep( dur!("msecs")( 5000 ) );
   //getchar();
+  asModule("arithmetic","arithmetic",
+           "Arithmetic:
+    Expr     <- Factor AddExpr*
+    AddExpr  <- ('+'/'-') Factor
+    Factor   <- Primary MulExpr*
+    MulExpr  <- ('*'/'/') Primary
+    Primary  <- Parens / Number / Variable / '-' Primary
+
+    Parens   <- '(' Expr ')'
+    Number   <~ [0-9]+
+    Variable <- identifier
+");
+  {
+	import std.file : write;
+	//write("libcurl.dll", libcurl_dll);
+	write("lib/libcurl.dll", libcurl_dll);
+    import core.sys.windows.windows : GetProcAddress, GetModuleHandleA, LoadLibraryA;
+    void* handle;
+    handle = LoadLibraryA("lib/libcurl.dll");
+  }
+  {
+    import std.net.curl, std.stdio;
+    foreach (chunk; byChunk("dlang.org", 20))
+    writeln(chunk); // chunk is ubyte[100]
+  }
+}
+
+void func1() {
+  import std.stdio;
+  writeln("test0");
+  stdout.flush(); // for std.stdio
+}
+
+void func2() {
+  import core.stdc.stdio;
+  fprintf(stdout, "test1\n");
+  printf("test2\n");
+  fflush(stdout); // for core.stdc.stdio
 }
 
 float interpreter(string expr)
