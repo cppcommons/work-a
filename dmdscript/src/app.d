@@ -10,8 +10,8 @@ import std.conv: to;
 
 import MemoryModule;
 
-//static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
-static ubyte[] libcurl_dll = cast(ubyte[]) import("libcurl.dll");
+static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
+//static ubyte[] libcurl_dll = cast(ubyte[]) import("libcurl.dll");
 
 void main()
 {
@@ -31,6 +31,7 @@ void main()
   //fflush(stdout); // for core.stdc.stdio
   //Thread.sleep( dur!("msecs")( 5000 ) );
   //getchar();
+  version(none)
   asModule("arithmetic","arithmetic",
            "Arithmetic:
     Expr     <- Factor AddExpr*
@@ -43,6 +44,7 @@ void main()
     Number   <~ [0-9]+
     Variable <- identifier
 ");
+  version(none)
   {
     void * handle = MemoryLoadLibrary(&libcurl_dll[0]);
   }
@@ -56,8 +58,10 @@ void main()
   }
   {
     import std.net.curl, std.stdio;
-    foreach (chunk; byChunk("dlang.org", 20))
-    writeln(chunk); // chunk is ubyte[100]
+    foreach (chunk; byChunk("dlang.org", 20)) {
+      writeln(chunk);
+      stdout.flush();
+    }
   }
   {
     import std.file;
