@@ -1,15 +1,27 @@
+int printf (const char *__format, ...);
+
 #include <windows.h>
 #include <winhttp.h>
-//#include <stdio.h>
-
-int printf (const char *__format, ...);
 
 int add2(int a, int b) {
 	printf("a=%d, b=%d\n", a, b);
        	return a+b;
 }
 
-LPBYTE ReadData(HINTERNET hRequest, LPDWORD lpdwSize)
+struct my_winhttp_stream {
+    wchar_t     * szUrl;
+    wchar_t     * szHostName;
+    wchar_t     * szUrlPath;
+    char        * szHeader;
+    char        * lpData;
+    unsigned long dwDataSize;
+#ifdef MY_WINHTTP_INTERNAL
+    HINTERNET      hSession, hConnect, hRequest;
+    URL_COMPONENTS urlComponents;
+#endif
+};
+
+static LPBYTE ReadData(HINTERNET hRequest, LPDWORD lpdwSize)
 {
     LPBYTE lpData = NULL;
     LPBYTE lpPrev = NULL;
@@ -52,7 +64,6 @@ int main() {
     HINTERNET      hSession, hConnect, hRequest;
     URL_COMPONENTS urlComponents;
     WCHAR          szHostName[1024], szUrlPath[8192];
-    WCHAR          szUrl[] = L"http://eternalwindows.jp/winbase/base/base00.html";
     LPBYTE         lpHeader, lpData;
     DWORD          dwSize;
 
@@ -83,7 +94,7 @@ int main() {
 
     // HTTPかHTTPSかそれ以外か
     DWORD dwOpenRequestFlag = (INTERNET_SCHEME_HTTPS == urlComponents.nScheme) ? WINHTTP_FLAG_SECURE : 0;
-    printf("dwOpenRequestFlag=0x%08x\n", dwOpenRequestFlag);
+    printf("dwOpenRequestFlag=0x%08lx\n", dwOpenRequestFlag);
 
     hSession = WinHttpOpen(wszAppName, WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
     if (hSession == NULL) return 0;

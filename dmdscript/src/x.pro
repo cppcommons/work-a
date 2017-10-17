@@ -10,8 +10,10 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
+HEADERS += x.h
+
 SOURCES += x.c
 
-DEFINES += TEST_MAIN=1
+DEFINES += TEST_MAIN=1 MY_WINHTTP_INTERNAL=1
 
 LIBS += -lwinhttp
