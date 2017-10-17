@@ -74,6 +74,12 @@ void main()
     writeln( dirName(exe) );
   }
 
+  {
+    import x;
+    int c = add2(11, 22);
+    writefln("c=%d", c);
+  }
+
 }
 
 void func1() {
