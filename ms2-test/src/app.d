@@ -50,6 +50,10 @@ void main()
       //MSYS2_PKGS;
     auto p = M2Pkgs(pkgs);
     writeln(p);
+    writeln(p.matches.length);
+    for (int i=0; i<p.matches.length; i++) {
+      writefln("%d: %s", i, p.matches[i]);
+    }
   }
 
 
