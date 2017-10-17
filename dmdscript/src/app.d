@@ -13,6 +13,21 @@ import std.conv: to;
 static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
 //static ubyte[] libcurl_dll = cast(ubyte[]) import("libcurl.dll");
 
+char[] toString(char* s)
+{
+  import core.stdc.string: strlen;
+  return s ? s[0 .. strlen(s)] : cast(char[])null;
+}
+
+// http://forum.dlang.org/post/c6ojg9$c8p$1@digitaldaemon.com
+/*
+wchar[] toString(wchar* s)
+{
+  import core.stdc.wchar_;
+  return s ? s[0 .. wcslen(s)] : cast(wchar[])null;
+}
+*/
+
 void main()
 {
   import std.stdio;
@@ -85,7 +100,15 @@ void main()
 
     //void  my_winhttp_stream_close(my_winhttp_stream *stream);
 
-    //char * my_winhttp_stream_read_all(my_winhttp_stream *stream, uint *dwSizeOptional);
+    uint dwSize;
+    char * lpData = my_winhttp_stream_read_all(stream, &dwSize);
+    char [] strData = toString( lpData );
+    writeln( dwSize );
+    //wstring r1 = to!wstring(lpData);
+    //wchar[] r2 = lpData[0 .. strlen(lpData)];
+    writeln( strData );
+
+    //writeln( toUTF8(lpData) );
   }
 
 }
