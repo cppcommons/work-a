@@ -10,12 +10,13 @@ import std.conv: to;
 
 mixin(grammar(`
 M2Pkgs:
-    List     < Elem+
+    List     < Elem* / " "*
     Elem     < Pkg / :Delim / :Parens
-    Pkg      <- identifier
+    #Pkg      <- identifier
+    Pkg      <~ [a-zA-Z0-9]+
     Delim    <- "," / ";"
     Parens   <~ "(" (!")" .)* ")"
-    Variable <- identifier
+    # dummy
 `));
 
 
@@ -45,10 +46,24 @@ void main()
   {
     //import core.stdc.stdlib: getenv;
     import std.process: environment;
-    auto pkgs = environment.get("MSYS2_PKGS");
+    import std.string: strip;
+    string pkgs = environment.get("MSYS2_PKGS");
+    writefln("pkgs.length=%d", pkgs.length);
     writefln("pkgs=%s", pkgs);
-      //MSYS2_PKGS;
+    if (strip(pkgs)=="") {
+      writeln("empty pkgs");
+      return;
+    }
     auto p = M2Pkgs(pkgs);
+    writeln(p.successful);
+    if (!p.successful) {
+      writeln("not success!");
+      return;
+    }
+    if (p.end != pkgs.length) {
+      writeln("length does not match!");
+      return;
+    }
     writeln(p);
     writeln(p.matches.length);
     for (int i=0; i<p.matches.length; i++) {
