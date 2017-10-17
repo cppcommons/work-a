@@ -98,6 +98,7 @@ void main()
     string url = "https://raw.githubusercontent.com/cyginst/ms2inst-v1/master/ms2inst.bat";
     my_winhttp_stream * stream = my_winhttp_stream_open(cast(wchar *)toUTF16z(app), cast(wchar *)toUTF16z(url));
     if (stream !is null) {
+      writeln( to!string(stream.szHostName) );
       uint dwSize;
       char * lpData = my_winhttp_stream_read_all(stream, &dwSize);
       char [] strData = toString( lpData );
@@ -108,6 +109,20 @@ void main()
       writeln( strData );
       my_winhttp_stream_close(stream);
     }
+  }
+
+  {
+    import std.conv: to;
+    string kanji = "kanji=漢字";
+    writeln(kanji);
+    wstring wkanji = to!wstring(kanji);
+    writeln(wkanji);
+  }
+
+  {
+    import std.path;
+    string rsrcDir = std.path.expandTilde("~/myresources");
+    writeln(rsrcDir);
   }
 
 }
