@@ -8,6 +8,7 @@ int add2(int a, int b) {
        	return a+b;
 }
 
+#if 0x0
 static LPBYTE ReadData(HINTERNET hRequest, LPDWORD lpdwSize)
 {
     LPBYTE lpData = NULL;
@@ -39,6 +40,7 @@ static LPBYTE ReadData(HINTERNET hRequest, LPDWORD lpdwSize)
 
     return lpData;
 }
+#endif
 
 struct my_winhttp_stream {
     wchar_t     * szAppName;
@@ -56,27 +58,31 @@ struct my_winhttp_stream {
 };
 
 extern struct my_winhttp_stream * my_winhttp_stream_open(const wchar_t *szAppName, const wchar_t *szUrl);
-extern void my_winhttp_stream_close(struct my_winhttp_stream *handle);
+extern void my_winhttp_stream_close(struct my_winhttp_stream *stream);
+extern const char * my_winhttp_stream_read_all(struct my_winhttp_stream *stream, unsigned long *dwSizeOptional);
 
 extern struct my_winhttp_stream * my_winhttp_stream_open(const wchar_t *szAppName, const wchar_t *szUrl) {
-    printf("start!\n");
-    printf("%d\n", add2(11, 22));
+    //HANDLE hHeap0 = HeapCreate(0, 0, 0);
+    HANDLE hHeap0 = HeapCreate(0, 1024*1024*128, 0);
+    printf("hHeap=0x%08x\n", hHeap0);
 
-    HANDLE hHeap = HeapCreate(0, 0, 0);
-    struct my_winhttp_stream * stream = (struct my_winhttp_stream *)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(struct my_winhttp_stream));
-    stream->hHeap = hHeap;
+    //void* dummy = (void *)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, 1024 * 1024 * 512);
+    //printf("dummy=0x%08x\n", dummy);
 
-    stream->szAppName = (wchar_t *)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szAppName)+1));
+    struct my_winhttp_stream * stream = (struct my_winhttp_stream *)HeapAlloc(hHeap0, HEAP_ZERO_MEMORY, sizeof(struct my_winhttp_stream));
+    stream->hHeap = hHeap0;
+
+    stream->szAppName = (wchar_t *)HeapAlloc(stream->hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szAppName)+1));
     lstrcpyW(stream->szAppName, szAppName);
 
-    stream->szUrl = (wchar_t *)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szUrl)+1));
+    stream->szUrl = (wchar_t *)HeapAlloc(stream->hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szUrl)+1));
     lstrcpyW(stream->szUrl, szUrl);
 
     printf("stream->szAppName=%ls\n", stream->szAppName);
     printf("stream->szUrl=%ls\n", stream->szUrl);
 
-    stream->szHostName = (wchar_t *)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szUrl)+1));
-    stream->szUrlPath  = (wchar_t *)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szUrl)+1));
+    stream->szHostName = (wchar_t *)HeapAlloc(stream->hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szUrl)+1));
+    stream->szUrlPath  = (wchar_t *)HeapAlloc(stream->hHeap, HEAP_ZERO_MEMORY, sizeof(wchar_t) * (lstrlenW(szUrl)+1));
 
     //URL_COMPONENTS urlComponents;
     ZeroMemory( &stream->urlComponents, sizeof(URL_COMPONENTS) );
@@ -101,7 +107,7 @@ extern struct my_winhttp_stream * my_winhttp_stream_open(const wchar_t *szAppNam
 
     stream->hSession = WinHttpOpen(stream->szAppName, WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
     if (stream->hSession == NULL) {
-        HeapDestroy(hHeap);
+        HeapDestroy(stream->hHeap);
         return 0;
     }
 
@@ -110,7 +116,7 @@ extern struct my_winhttp_stream * my_winhttp_stream_open(const wchar_t *szAppNam
     stream->hConnect = WinHttpConnect(stream->hSession, stream->szHostName, stream->urlComponents.nPort, 0);
     if (stream->hConnect == NULL) {
         WinHttpCloseHandle(stream->hSession);
-        HeapDestroy(hHeap);
+        HeapDestroy(stream->hHeap);
         return 0;
     }
 
@@ -123,7 +129,7 @@ extern struct my_winhttp_stream * my_winhttp_stream_open(const wchar_t *szAppNam
     if (stream->hRequest == NULL) {
         WinHttpCloseHandle(stream->hConnect);
         WinHttpCloseHandle(stream->hSession);
-        HeapDestroy(hHeap);
+        HeapDestroy(stream->hHeap);
         return 0;
     }
 
@@ -133,7 +139,7 @@ extern struct my_winhttp_stream * my_winhttp_stream_open(const wchar_t *szAppNam
         WinHttpCloseHandle(stream->hRequest);
         WinHttpCloseHandle(stream->hConnect);
         WinHttpCloseHandle(stream->hSession);
-        HeapDestroy(hHeap);
+        HeapDestroy(stream->hHeap);
         return 0;
     }
 
@@ -143,33 +149,61 @@ extern struct my_winhttp_stream * my_winhttp_stream_open(const wchar_t *szAppNam
 
     DWORD dwSizeWithZero = 0; //unit = sizeof(wchar_t)
     WinHttpQueryHeaders(stream->hRequest, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, NULL, &dwSizeWithZero, WINHTTP_NO_HEADER_INDEX);
-    stream->szHeader = (wchar_t *)HeapAlloc(hHeap, 0, dwSizeWithZero/sizeof(wchar_t));
+    stream->szHeader = (wchar_t *)HeapAlloc(stream->hHeap, 0, dwSizeWithZero);
     WinHttpQueryHeaders(stream->hRequest, WINHTTP_QUERY_RAW_HEADERS_CRLF, WINHTTP_HEADER_NAME_BY_INDEX, stream->szHeader, &dwSizeWithZero, WINHTTP_NO_HEADER_INDEX);
 
     printf("(5)\n%ls\n", stream->szHeader);
 
     return stream;
-#if 0x0
-
-
-
-
-
-
-
-
-
-    lpData = ReadData(hRequest, &dwSize);
-    MessageBoxA(NULL, (LPSTR)lpData, "ボディ", MB_OK);
-    HeapFree(GetProcessHeap(), 0, lpData);
-
-    WinHttpCloseHandle(hRequest);
-    WinHttpCloseHandle(hConnect);
-    WinHttpCloseHandle(hSession);
-#endif
-
 }
 
+extern void my_winhttp_stream_close(struct my_winhttp_stream *stream) {
+    if (!stream) return;
+    WinHttpCloseHandle(stream->hRequest);
+    WinHttpCloseHandle(stream->hConnect);
+    WinHttpCloseHandle(stream->hSession);
+    HeapDestroy(stream->hHeap);
+}
+
+extern const char * my_winhttp_stream_read_all(struct my_winhttp_stream *stream, unsigned long *dwSizeOptional) {
+    if (!stream) return NULL;
+
+    char * lpData = NULL;
+    DWORD  dwSize = 0;
+    DWORD  dwTotalSize = 0;
+    HANDLE hHeap = stream->hHeap;
+
+    for (;;) {
+        WinHttpQueryDataAvailable(stream->hRequest, &dwSize);
+        printf("dwSize=%lu\n", dwSize);
+        printf("stream->hHeap=0x%08x\n", stream->hHeap);
+        if (!dwSize) break;
+        DWORD dwSizeWithZero = dwTotalSize+dwSize+1;
+        printf("dwSizeWithZero=%lu\n", dwSizeWithZero);
+        if (!lpData) {
+            printf("(1)\n");
+            lpData = (char *)HeapAlloc(hHeap, 0, dwSizeWithZero);
+        } else {
+            printf("(2)\n");
+            lpData = (char *)HeapReAlloc(hHeap, 0, lpData, dwSizeWithZero);
+        }
+        printf("(3)\n");
+        printf("lpData=0x%08x\n", lpData);
+        printf("dwTotalSize=%lu\n", dwTotalSize);
+        printf("dwSize=%lu\n", dwSize);
+        WinHttpReadData(stream->hRequest, lpData + dwTotalSize, dwSize, NULL);
+        dwTotalSize+= dwSize;
+        lpData[dwTotalSize] = 0;
+        printf("(4)\n");
+    }
+
+    stream->lpData = lpData;
+    stream->dwDataSize = dwTotalSize;
+
+    if (dwSizeOptional) *dwSizeOptional= dwTotalSize;
+
+    return lpData;
+}
 
 #ifdef TEST_MAIN
 int main() {
@@ -181,14 +215,12 @@ int main() {
 
     struct my_winhttp_stream *stream = my_winhttp_stream_open(wszAppName, wszUrl);
 
-    stream->lpData = ReadData(stream->hRequest, &stream->dwDataSize);
-    MessageBoxA(NULL, (LPSTR)stream->lpData, "ボディ", MB_OK);
-    HeapFree(GetProcessHeap(), 0, stream->lpData);
+    if (!stream) return 0;
 
-    WinHttpCloseHandle(stream->hRequest);
-    WinHttpCloseHandle(stream->hConnect);
-    WinHttpCloseHandle(stream->hSession);
+    const char *lpData = my_winhttp_stream_read_all(stream, NULL);
+    MessageBoxA(NULL, (LPSTR)lpData, "ボディ", MB_OK);
 
+    my_winhttp_stream_close(stream);
 
     return 0;
 }
