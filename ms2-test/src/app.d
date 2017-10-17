@@ -13,7 +13,8 @@ M2Pkgs:
     List     < Elem* / " "*
     Elem     < Pkg / :Delim / :Parens
     #Pkg      <- identifier
-    Pkg      <~ [a-zA-Z0-9]+
+    Pkg      <~ (Letter+ "/" Letter+) / Letter+
+    Letter   <- [a-zA-Z0-9]
     Delim    <- "," / ";"
     Parens   <~ "(" (!")" .)* ")"
     # dummy
@@ -60,11 +61,11 @@ void main()
       writeln("not success!");
       return;
     }
+    writeln(p);
     if (p.end != pkgs.length) {
       writeln("length does not match!");
       return;
     }
-    writeln(p);
     writeln(p.matches.length);
     for (int i=0; i<p.matches.length; i++) {
       writefln("%d: %s", i, p.matches[i]);

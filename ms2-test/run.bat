@@ -8,7 +8,7 @@
 set MSYS2_NAME=ms2inst
 set MSYS2_BITS=32
 set MSYS2_PKGS=test;diffutils;procps psmisc , (this is comment)
-set MSYS2_PKGS=2test;48diffutils;p33rocps psmisc , (this is comment)
+set MSYS2_PKGS=2test;48diffutils;p33rocps msys/psmisc , (this is comment)
 set MSYS2_PKGS=%MSYS2_PKGS%,(tmux-git) &:: THIS IS TMUX
 set MSYS2_PKGS=%MSYS2_PKGS%,vim      &:: THIS IS VIM
 set MSYS2_PKGS=%MSYS2_PKGS%,         &:: THIS IS EMPTY
