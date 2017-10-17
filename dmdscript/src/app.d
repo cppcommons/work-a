@@ -92,23 +92,22 @@ void main()
   {
     import x;
     import std.utf;
+    import std.conv: to;
 
     string app = "Sample Application/1.0";
     string url = "https://raw.githubusercontent.com/cyginst/ms2inst-v1/master/ms2inst.bat";
-    
     my_winhttp_stream * stream = my_winhttp_stream_open(cast(wchar *)toUTF16z(app), cast(wchar *)toUTF16z(url));
-
-    //void  my_winhttp_stream_close(my_winhttp_stream *stream);
-
-    uint dwSize;
-    char * lpData = my_winhttp_stream_read_all(stream, &dwSize);
-    char [] strData = toString( lpData );
-    writeln( dwSize );
-    //wstring r1 = to!wstring(lpData);
-    //wchar[] r2 = lpData[0 .. strlen(lpData)];
-    writeln( strData );
-
-    //writeln( toUTF8(lpData) );
+    if (stream !is null) {
+      uint dwSize;
+      char * lpData = my_winhttp_stream_read_all(stream, &dwSize);
+      char [] strData = toString( lpData );
+      writeln( dwSize );
+      string r1 = to!string(lpData);
+      //wstring r1 = to!wstring(lpData);
+      //wchar[] r2 = lpData[0 .. strlen(lpData)];
+      writeln( strData );
+      my_winhttp_stream_close(stream);
+    }
   }
 
 }
