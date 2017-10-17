@@ -131,3 +131,6 @@
 (use-package flycheck-d-unittest :ensure t)
 (require 'flycheck-d-unittest)
 (setup-flycheck-d-unittest)
+
+(global-set-key [C-right] 'forward-sexp)
+(global-set-key [C-left]  'backward-sexp)

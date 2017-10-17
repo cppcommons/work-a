@@ -1,0 +1,20 @@
+{
+    "name": "ms2-test",
+    "targetType": "executable",
+    "authors": [
+        "owner"
+    ],
+    "description": "A minimal D application.",
+    "license": "proprietary",
+    "importPaths":["src", "lib"],
+    "sourcePaths":["src"],
+    "sourceFiles-x86_mscoff":["lib/pegged-ms32.lib", "src/x.obj", "winhttp.lib"],
+    "stringImportPaths": [
+      "resource"
+    ],
+    "dependencies": {
+        "dmdscript": "~master",
+    },
+    "subConfigurations": {
+    },
+}

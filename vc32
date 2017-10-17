@@ -2,10 +2,10 @@
 unameOut="$(uname -s)"
 case "${unameOut}" in
     CYGWIN*)    machine=Cygwin
-                cmd /c "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86 "&" $* |& iconv -f cp932 -t utf-8
+                cmd /c "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86 "&" $* |& iconv -c -f cp932 -t utf-8
 		;;
     MINGW*)     machine=MinGw
-	        cmd /c "call \"C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat\" x86 & $*" |& iconv -f cp932 -t utf-8
+	        cmd /c "call \"C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat\" x86 & $*" |& iconv -c -f cp932 -t utf-8
 		;;
     *)          machine="UNKNOWN:${unameOut}"
 esac

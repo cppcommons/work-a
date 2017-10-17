@@ -1,0 +1,11 @@
+// A script to test ds-ext sample: adding a global function and a class
+print("Calling extended function...");
+println(mul(2,2,4));
+a = new A(42);
+a.f("Test it"); //extended method
+a.add2x(11,22);
+
+$b = new A(22);
+$b.f("this is $b");
+println(add2d(222,333));
+println(sfunc("abc"));
