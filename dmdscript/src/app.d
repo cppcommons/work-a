@@ -76,8 +76,16 @@ void main()
 
   {
     import x;
-    int c = add2(11, 22);
-    writefln("c=%d", c);
+    import std.utf;
+
+    string app = "Sample Application/1.0";
+    string url = "https://raw.githubusercontent.com/cyginst/ms2inst-v1/master/ms2inst.bat";
+    
+    my_winhttp_stream * stream = my_winhttp_stream_open(cast(wchar *)toUTF16z(app), cast(wchar *)toUTF16z(url));
+
+    //void  my_winhttp_stream_close(my_winhttp_stream *stream);
+
+    //char * my_winhttp_stream_read_all(my_winhttp_stream *stream, uint *dwSizeOptional);
   }
 
 }

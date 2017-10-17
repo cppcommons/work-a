@@ -12,3 +12,5 @@ yyy-test-*
 *.o
 *.obj
 *.lst
+Makefile*
+*.user
