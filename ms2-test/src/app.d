@@ -5,7 +5,6 @@
 import core.thread;
 
 import pegged.grammar;
-import arithmetic;
 import std.conv: to;
 
 mixin(grammar(`
@@ -19,13 +18,6 @@ M2Pkgs:
     Parens   <~ "(" (!")" .)* ")"
     # dummy
 `));
-
-
-
-//import MemoryModule;
-
-static immutable ubyte[] libcurl_dll = cast(immutable ubyte[]) import("libcurl.dll");
-//static ubyte[] libcurl_dll = cast(ubyte[]) import("libcurl.dll");
 
 char[] toString(char* s)
 {
@@ -73,34 +65,6 @@ void main()
   }
 
 
-
-  //fprintf(stdout, "test1\n");
-  //printf("%f\n", interpreter("1"));
-  writeln(interpreter("1"));
-  auto p1 = Arithmetic("1+2");
-  writeln(p1.matches);
-  writeln(p1);
-  assert(interpreter("-1") == -1.0);
-  assert(interpreter("1+1") == 2.0);
-  assert(interpreter("1-1") == 0.0);
-  //printf("test2\n");
-  stdout.flush(); // for std.stdio
-  //fflush(stdout); // for core.stdc.stdio
-  //Thread.sleep( dur!("msecs")( 5000 ) );
-  //getchar();
-  version(none)
-  asModule("arithmetic","arithmetic",
-           "Arithmetic:
-    Expr     <- Factor AddExpr*
-    AddExpr  <- ('+'/'-') Factor
-    Factor   <- Primary MulExpr*
-    MulExpr  <- ('*'/'/') Primary
-    Primary  <- Parens / Number / Variable / '-' Primary
-
-    Parens   <- '(' Expr ')'
-    Number   <~ [0-9]+
-    Variable <- identifier
-");
   {
     import std.file;
     import std.path;
@@ -135,10 +99,17 @@ void main()
 
   {
     import std.conv: to;
+    import std.string: toStringz;
+    import std.windows.charset: fromMBSz, toMBSz;
     string kanji = "kanji=漢字";
     writeln(kanji);
+    string sjis = to!(string)(toMBSz(kanji));
+    writeln("utf8 to sjis : ", sjis);
+    writeln("sjis to utf8 : ", fromMBSz(toStringz(cast(char[])sjis)));
+
     wstring wkanji = to!wstring(kanji);
     writeln(wkanji);
+    //writeln("utf8 to sjis : ", to!(string)(toMBSz(wkanji)));
   }
 
   {
@@ -149,64 +120,25 @@ void main()
 
 }
 
-void func1() {
-  import std.stdio;
-  writeln("test0");
-  stdout.flush(); // for std.stdio
+/*
+import std.stdio;
+import std.string;
+import std.conv;
+import std.file;
+import std.windows.charset;
+
+void mainX(){
+  string utf8 = "あいうえお";//UTF8
+  writeln("utf8 : ", utf8);
+  // UTF8 を Shift-JIS に
+  writeln("utf8 to sjis : ", to!(string)(toMBSz(utf8)));
+hite
+  auto sjis = File("sjis.txt").readln;//あいうえおをS-JISで保存したファイル
+  writeln("sjis : ", sjis);
+  // Shift-JIS を UTF8 に
+  writeln("sjis to utf8 : ", fromMBSz(toStringz(cast(char[])sjis)));
 }
-
-void func2() {
-  import core.stdc.stdio;
-  fprintf(stdout, "test1\n");
-  printf("test2\n");
-  fflush(stdout); // for core.stdc.stdio
-}
-
-float interpreter(string expr)
-{
-    auto p = Arithmetic(expr);
-
-    //writeln(p);
-
-    float value(ParseTree p)
-    {
-      //writeln(p.name);
-      //stdout.flush();
-        switch (p.name)
-        {
-            case "Arithmetic":
-                return value(p.children[0]);
-            case "Arithmetic.Term":
-                float v = 0.0;
-                foreach(child; p.children) v += value(child);
-                return v;
-            case "Arithmetic.Add":
-                return value(p.children[0]);
-            case "Arithmetic.Sub":
-                return -value(p.children[0]);
-            case "Arithmetic.Factor":
-                float v = 1.0;
-                foreach(child; p.children) v *= value(child);
-                return v;
-            case "Arithmetic.Mul":
-                return value(p.children[0]);
-            case "Arithmetic.Div":
-                return 1.0/value(p.children[0]);
-            case "Arithmetic.Primary":
-                return value(p.children[0]);
-            case "Arithmetic.Parens":
-                return value(p.children[0]);
-            case "Arithmetic.Neg":
-                return -value(p.children[0]);
-            case "Arithmetic.Number":
-                return to!float(p.matches[0]);
-            default:
-                return float.nan;
-        }
-    }
-
-    return value(p);
-}
+*/
 
 /+
 struct ParseTree
