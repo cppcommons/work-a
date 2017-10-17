@@ -3,53 +3,14 @@ int printf (const char *__format, ...);
 #include <windows.h>
 #include <winhttp.h>
 
-int add2(int a, int b) {
-	printf("a=%d, b=%d\n", a, b);
-       	return a+b;
-}
-
-#if 0x0
-static LPBYTE ReadData(HINTERNET hRequest, LPDWORD lpdwSize)
-{
-    LPBYTE lpData = NULL;
-    LPBYTE lpPrev = NULL;
-    DWORD  dwSize;
-    DWORD  dwTotalSize = 0;
-    DWORD  dwTotalSizePrev = 0;
-
-    for (;;) {
-        WinHttpQueryDataAvailable(hRequest, &dwSize);
-        if (dwSize > 0) {
-            dwTotalSizePrev = dwTotalSize;
-            dwTotalSize += dwSize;
-            //lpData = (LPBYTE)HeapAlloc(GetProcessHeap(), 0, dwTotalSize);
-            lpData = (LPBYTE)HeapAlloc(GetProcessHeap(), 0, dwTotalSize+1);
-            if (lpPrev != NULL) {
-                CopyMemory(lpData, lpPrev, dwTotalSizePrev);
-                HeapFree(GetProcessHeap(), 0, lpPrev);
-            }
-            WinHttpReadData(hRequest, lpData + dwTotalSizePrev, dwSize, NULL);
-            lpData[dwTotalSize] = 0;
-            lpPrev = lpData;
-        }
-        else
-            break;
-    }
-
-    *lpdwSize= dwTotalSize;
-
-    return lpData;
-}
-#endif
-
 struct my_winhttp_stream {
     wchar_t     * szAppName;
     wchar_t     * szUrl;
     wchar_t     * szHostName;
     wchar_t     * szUrlPath;
     wchar_t     * szHeader;
-    char        * lpData;
-    unsigned long dwDataSize;
+    //char        * lpData;
+    //unsigned long dwDataSize;
 #ifdef MY_WINHTTP_INTERNAL
     HANDLE         hHeap;
     URL_COMPONENTS urlComponents;
@@ -175,30 +136,17 @@ extern const char * my_winhttp_stream_read_all(struct my_winhttp_stream *stream,
 
     for (;;) {
         WinHttpQueryDataAvailable(stream->hRequest, &dwSize);
-        printf("dwSize=%lu\n", dwSize);
-        printf("stream->hHeap=0x%08x\n", stream->hHeap);
         if (!dwSize) break;
         DWORD dwSizeWithZero = dwTotalSize+dwSize+1;
-        printf("dwSizeWithZero=%lu\n", dwSizeWithZero);
         if (!lpData) {
-            printf("(1)\n");
             lpData = (char *)HeapAlloc(hHeap, 0, dwSizeWithZero);
         } else {
-            printf("(2)\n");
             lpData = (char *)HeapReAlloc(hHeap, 0, lpData, dwSizeWithZero);
         }
-        printf("(3)\n");
-        printf("lpData=0x%08x\n", lpData);
-        printf("dwTotalSize=%lu\n", dwTotalSize);
-        printf("dwSize=%lu\n", dwSize);
         WinHttpReadData(stream->hRequest, lpData + dwTotalSize, dwSize, NULL);
-        dwTotalSize+= dwSize;
+        dwTotalSize += dwSize;
         lpData[dwTotalSize] = 0;
-        printf("(4)\n");
     }
-
-    stream->lpData = lpData;
-    stream->dwDataSize = dwTotalSize;
 
     if (dwSizeOptional) *dwSizeOptional= dwTotalSize;
 
@@ -208,7 +156,6 @@ extern const char * my_winhttp_stream_read_all(struct my_winhttp_stream *stream,
 #ifdef TEST_MAIN
 int main() {
     printf("start!\n");
-    printf("%d\n", add2(11, 22));
 
     wchar_t * wszUrl = L"https://raw.githubusercontent.com/cyginst/ms2inst-v1/master/ms2inst.bat";
     wchar_t * wszAppName = L"Sample Application/1.0";
