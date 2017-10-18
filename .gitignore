@@ -25,3 +25,4 @@ dub.selections.json
 sqlite-test/sqlite-test
 *.lst
 desktop.ini
+/emacs-25.3_1-x86_64*
