@@ -1,0 +1,12 @@
+#!bash
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    CYGWIN*)    machine=Cygwin
+                cmd /c "C:/Program Files (x86)/Microsoft Visual Studio/VC98/Bin/VCVARS32.BAT" x86 "&" $* |& iconv -c -f cp932 -t utf-8
+		;;
+    MINGW*)     machine=MinGw
+	        cmd /c "call \"C:/Program Files (x86)/Microsoft Visual Studio/VC98/Bin/VCVARS32.BAT\" x86 & $*" |& iconv -c -f cp932 -t utf-8
+		;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+#echo ${machine}
