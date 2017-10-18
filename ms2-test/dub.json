@@ -8,7 +8,7 @@
     "license": "proprietary",
     "importPaths":["src", "lib"],
     "sourcePaths":["src"],
-    "sourceFiles-x86_mscoff":["lib/pegged-ms32.lib", "src/x.obj", "winhttp.lib"],
+    "sourceFiles-x86_mscoff":["lib/pegged-ms32.lib"],
     "stringImportPaths": [
       "resource"
     ],
