@@ -3,6 +3,8 @@ import core.stdc.stdio;
 import core.stdc.stdlib;
 import core.stdc.string;
 
+/** this is add2 function.
+これは add2 関数です。 */
 int add2(int a, int b)
 {
   return a + b;
