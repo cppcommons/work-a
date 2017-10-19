@@ -3,5 +3,11 @@
     "targetType": "executable",
     "sourcePaths":["."],
     "importPaths":["."],
-    "sourceFiles":[]
+    "sourceFiles":["sqlite3-dm32.lib"],
+    "dependencies": {
+        "d2sqlite3": "~master"
+    },
+    "subConfigurations": {
+        "d2sqlite3": "without-lib"
+    }
 }
