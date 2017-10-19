@@ -1,0 +1,1 @@
+dub --arch=x86 --build=release
