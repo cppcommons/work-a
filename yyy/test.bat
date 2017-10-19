@@ -1,4 +1,5 @@
 ::C:\D\dmd2\windows\bin\dmd.exe -I=lib app.d lib/pegged-dm32.lib winhttp-dm32.lib
+implib sqlite3-dm32.lib sqlite3.dll
 setlocal
 call "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86
 echo on
