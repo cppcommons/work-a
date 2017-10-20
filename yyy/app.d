@@ -1,4 +1,4 @@
- // Note: exception handling is left aside for clarity.
+// Note: exception handling is left aside for clarity.
 import std.stdio;
 import d2sqlite3;
 import std.typecons : Nullable;
