@@ -24,7 +24,7 @@ version (unittest)
 else
 	int main()
 {
-	writeln("start!");
+	writeln("start!スタート!");
 	// Open a database in memory.
 	auto db = Database(":memory:");
 
@@ -45,14 +45,24 @@ else
 	statement.bind(2, 77.5);
 	statement.execute();
 	statement.reset(); // Need to reset the statement after execution.
+	auto rowid = db.execute("SELECT last_insert_rowid()").oneValue!long;
+	writeln("rowid=", rowid);
+	Statement statement2 = db.prepare("SELECT name FROM person WHERE rowid == :rowid");
+	statement2.bind(":rowid", rowid);
+	auto name1 = statement2.execute().oneValue!string;
+	writeln("name1=", name1);
 
 	// Bind muliple values at the same time
 	statement.bindAll("John", null);
 	statement.execute();
 	statement.reset();
+	auto rowid2 = db.execute("SELECT last_insert_rowid()").oneValue!long;
+	writeln("rowid=", rowid2);
 
 	// Bind, execute and reset in one call
 	statement.inject("Clara", 88.1);
+	auto rowid3 = db.execute("SELECT last_insert_rowid()").oneValue!long;
+	writeln("rowid=", rowid3);
 
 	// Count the changes
 	assert(db.totalChanges == 3);
@@ -62,7 +72,7 @@ else
 	assert(count == 2);
 
 	// Read the data from the table lazily
-	ResultRange results = db.execute("SELECT * FROM person");
+	ResultRange results = db.execute("SELECT *, rowid rid FROM person");
 	foreach (Row row; results)
 	{
 		// Retrieve "id", which is the column at index 0, and contains an int,
@@ -73,6 +83,8 @@ else
 		auto name = row["name"].as!string;
 		writeln(name);
 
+		auto rowidx = row["rid"].as!ulong;
+		writeln(rowidx);
 		// Retrieve "score", which is at index 2, e.g. using the peek function,
 		// using a Nullable type
 		//auto score = row.peek!(Nullable!double)(2);
