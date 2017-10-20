@@ -24,6 +24,7 @@ version (unittest)
 else
 	int main()
 {
+	writeln("start!");
 	// Open a database in memory.
 	auto db = Database(":memory:");
 

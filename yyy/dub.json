@@ -3,7 +3,7 @@
     "targetType": "executable",
     "sourcePaths":["."],
     "importPaths":["."],
-    "sourceFiles":["sqlite3-dm32.lib"],
+    "sourceFiles":["sqlite-win32-x86-3200100-dm32.lib"],
     "dependencies": {
         "d2sqlite3": "~master"
     },
